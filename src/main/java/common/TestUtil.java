@@ -7,7 +7,8 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 
 public class TestUtil {
     public static boolean hitsIncludeTItle(IndexSearcher searcher, TopDocs hits, String title) throws IOException {
@@ -40,15 +41,15 @@ public class TestUtil {
         return FSDirectory.open(Paths.get("index.dir"));
     }
 
-    public static void rmDir(File dir) throws IOException {
-        if (dir.exists()) {
-            File[] files = dir.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (!files[i].delete()) {
-                    throw new IOException("could not delete " + files[i]);
+    public static void rmDir(Path path) throws IOException {
+        if (Files.isDirectory(path)) {
+            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
                 }
-            }
-            dir.delete();
+            });
         }
     }
 }

@@ -45,7 +45,7 @@ public class Indexer {
 
         IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
         iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-
+        iwc.setUseCompoundFile(false);
         writer = new IndexWriter(dir, iwc);
     }
 

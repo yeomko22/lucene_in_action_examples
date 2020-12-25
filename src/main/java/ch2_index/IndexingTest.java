@@ -5,9 +5,7 @@ import junit.framework.TestCase;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
 
@@ -28,7 +26,7 @@ public class IndexingTest extends TestCase {
             doc.add(new StringField("id", ids[i], Field.Store.YES));
             doc.add(new StoredField("country", unindexed[i]));
             doc.add(new TextField("contents", unstored[i], Field.Store.NO));
-            doc.add(new StringField("city", text[i], Field.Store.YES));
+            doc.add(new TextField("city", text[i], Field.Store.YES));
             writer.addDocument(doc);
         }
         writer.close();
@@ -59,5 +57,30 @@ public class IndexingTest extends TestCase {
         assertEquals(ids.length, reader.maxDoc());
         assertEquals(ids.length, reader.numDocs());
         reader.close();
+    }
+
+    public void testDelete() throws IOException {
+        IndexWriter writer = getWriter();
+        assertEquals(2, writer.getDocStats().numDocs);
+        writer.deleteDocuments(new Term("id", "1"));
+        writer.commit();
+        assertTrue(writer.hasDeletions());
+        assertEquals(2, writer.getDocStats().maxDoc);
+        assertEquals(1, writer.getDocStats().numDocs);
+        writer.close();
+    }
+
+    public void testUpdate() throws IOException {
+        assertEquals(1, getHitCount("city", "Amsterdam"));
+        IndexWriter writer = getWriter();
+        Document doc = new Document();
+        doc.add(new StringField("id", "1", Field.Store.YES));
+        doc.add(new StoredField("country", "Netherlands"));
+        doc.add(new TextField("contents", "Den Haag has a lot of museums", Field.Store.NO));
+        doc.add(new TextField("city", "Dan Haag", Field.Store.YES));
+        writer.updateDocument(new Term("id", "1"), doc);
+        writer.close();
+        assertEquals(0, getHitCount("city", "Amsterdam"));
+        assertEquals(1, getHitCount("city", "Haag"));
     }
 }
