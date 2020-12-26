@@ -1,20 +1,24 @@
 package common;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class TestUtil {
-    public static boolean hitsIncludeTItle(IndexSearcher searcher, TopDocs hits, String title) throws IOException {
+    public static boolean hitsIncludeTitle(IndexSearcher searcher, TopDocs hits, String title) throws IOException {
         for (ScoreDoc match : hits.scoreDocs) {
             Document doc = searcher.doc(match.doc);
+            System.out.println(doc.get("title") + " " + doc.get("pubmonthVal") + " " + doc.get("title2"));
             if (title.equals(doc.get("title"))) {
+                System.out.println("hit!");
                 return true;
             }
         }
@@ -37,8 +41,16 @@ public class TestUtil {
         }
     }
 
+    public static String getIndexDir() {
+        return System.getProperty("user.dir") + "/build/index";
+    }
+
+    public static String getDataDir() {
+        return System.getProperty("user.dir") + "/data";
+    }
+
     public static Directory getBookIndexDirectory() throws IOException {
-        return FSDirectory.open(Paths.get("index.dir"));
+        return FSDirectory.open(Paths.get(getIndexDir()));
     }
 
     public static void rmDir(Path path) throws IOException {
