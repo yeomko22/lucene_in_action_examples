@@ -15,7 +15,7 @@ I tried to rewrite the codes as similar as possible from the original one, in or
 - ch1. intro
 - ch2. index
 - ch3. search
-- ch4. analyze(~4.3)
+- ch4. analyze
 
 ## Questions
 - If you have any questions, send me email
