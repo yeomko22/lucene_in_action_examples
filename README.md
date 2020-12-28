@@ -18,6 +18,6 @@ I tried to rewrite the codes as similar as possible from the original one, in or
 - ch4. analyze
 - ch5. advanced search
 
-## Questions
-- If you have any questions, send me email
+## Contact
+- any kind of feedback(questions, contribution, ...) will be welcomed.
 - hjkim2246@gmail.com
