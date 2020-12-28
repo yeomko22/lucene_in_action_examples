@@ -16,6 +16,7 @@ I tried to rewrite the codes as similar as possible from the original one, in or
 - ch2. index
 - ch3. search
 - ch4. analyze
+- ch5. advanced search
 
 ## Questions
 - If you have any questions, send me email
