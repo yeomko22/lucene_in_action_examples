@@ -5,3 +5,9 @@
 - When using token stream, reset() ans close() should be called.
 - Genrating StopAnalyzer needs stop words set parameter.
 - Building customAnalyer is changed. Related source codes are in StopAnalyzer2.java.
+- PerFieldAnalyzerWrapper.addAnalyzer is deprecated. Analyzers for fields should be set during construction. 
+- ChineseAnalyzer and SmartChineseAnalyzer are deprecated. Official document said StandardAnalyzer does same functionality.
+
+### Skipped Parts
+- keyword -> testPerFieldAnalyzer()
+- NutchExample

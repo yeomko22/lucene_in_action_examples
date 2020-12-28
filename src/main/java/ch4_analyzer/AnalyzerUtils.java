@@ -18,11 +18,9 @@ public class AnalyzerUtils {
 
     public static void displayTokens(TokenStream stream) throws IOException {
         CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-        stream.reset();
         while (stream.incrementToken()) {
             System.out.print("[" + term.toString() + "]");
         }
-        stream.close();
     }
 
     public static void displayTokensWithFullDetails(Analyzer analyzer, String text) throws IOException {
@@ -61,6 +59,25 @@ public class AnalyzerUtils {
             Assert.assertEquals(expected, termAttr.toString());
         }
         Assert.assertFalse(stream.incrementToken());
+        stream.close();
+    }
+
+    public static void displayTokensWithPositions(Analyzer analyzer, String text) throws IOException {
+        TokenStream stream = analyzer.tokenStream("contents", new StringReader(text));
+        CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
+        PositionIncrementAttribute posIncr = stream.addAttribute(PositionIncrementAttribute.class);
+        int position = 0;
+        stream.reset();
+        while (stream.incrementToken()) {
+            int increment = posIncr.getPositionIncrement();
+            if (increment > 0) {
+                position = position + increment;
+                System.out.println();
+                System.out.print(position + ": ");
+            }
+            System.out.print("[" + term.toString() + "] ");
+        }
+        System.out.println();
         stream.close();
     }
 }

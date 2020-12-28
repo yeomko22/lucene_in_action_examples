@@ -1,21 +1,25 @@
-package ch4_analyzer;
+package ch4_analyzer.stop;
 
 import org.apache.lucene.analysis.*;
 import org.apache.lucene.analysis.core.LetterTokenizer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 
-public class StopAnalyzerFlawed extends Analyzer {
+public class StopAnalyzer2 extends Analyzer {
     private CharArraySet stopWords;
 
-    public StopAnalyzerFlawed() {
+    public StopAnalyzer2() {
         stopWords = EnglishAnalyzer.getDefaultStopSet();
+    }
+
+    public StopAnalyzer2(String[] stopWords) {
+        this.stopWords = StopFilter.makeStopSet(stopWords);
     }
 
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
         LetterTokenizer src = new LetterTokenizer();
-        TokenStream result = new StopFilter(src, stopWords);
-        result = new LowerCaseFilter(result);
+        TokenStream result = new LowerCaseFilter(src);
+        result = new StopFilter(result, stopWords);
         return new TokenStreamComponents(src, result);
     }
 }

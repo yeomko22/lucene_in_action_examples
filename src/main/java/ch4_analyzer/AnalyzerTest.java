@@ -52,12 +52,4 @@ public class AnalyzerTest extends TestCase {
     public void testStandardAnalyzer() throws Exception {
         AnalyzerUtils.displayTokensWithFullDetails(new StandardAnalyzer(), "i'll email you at xyz@example.com");
     }
-
-    public void testStopAnalyzer2() throws Exception {
-        AnalyzerUtils.assertAnalyzesTo(new StopAnalyzer2(), "The quick brown", new String[]{"quick", "brown"});
-    }
-
-    public void testStopAnalyzerFlawed() throws Exception {
-        AnalyzerUtils.assertAnalyzesTo(new StopAnalyzerFlawed(), "The quick brown...", new String[]{"the", "quick", "brown"});
-    }
 }
