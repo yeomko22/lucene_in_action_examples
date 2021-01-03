@@ -18,7 +18,6 @@ public class TestUtil {
             Document doc = searcher.doc(match.doc);
             System.out.println(doc.get("title") + " " + doc.get("pubmonthVal") + " " + doc.get("title2"));
             if (title.equals(doc.get("title"))) {
-                System.out.println("hit!");
                 return true;
             }
         }
