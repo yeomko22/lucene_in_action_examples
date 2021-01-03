@@ -43,7 +43,7 @@ public class CreateTestIndex {
         doc.add(new StringField("category", category, StringField.Store.YES));
         doc.add(new SortedDocValuesField("category", new BytesRef(category)));
         doc.add(new TextField("title", title, Field.Store.YES));
-        doc.add(new TextField("title2", title.toLowerCase(), Field.Store.YES));
+        doc.add(new SortedDocValuesField("title2", new BytesRef(title.toLowerCase())));
 
         // split multiple authors into unique field instances
         String[] authors = author.split(",");
@@ -61,10 +61,12 @@ public class CreateTestIndex {
         } catch (ParseException pe) {
             throw new RuntimeException(pe);
         }
-        doc.add(new IntPoint("pubmonthAsDay", (int) (d.getTime()/(1000*3600*24))));
+        int pubmonthAsDay = (int) (d.getTime()/(1000*3600*24));
+        doc.add(new IntPoint("pubmonthAsDay", pubmonthAsDay));
         for(String text : new String[] {title, subject, author, category}) {
             doc.add(new TextField("contents", text, Field.Store.YES));
         }
+        doc.add(new NumericDocValuesField("pubmonthAsDayVal",  pubmonthAsDay));
         return doc;
     }
 

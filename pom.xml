@@ -45,6 +45,12 @@
             <artifactId>lucene-analyzers-nori</artifactId>
             <version>8.7.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-expressions -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-expressions</artifactId>
+            <version>8.7.0</version>
+        </dependency>
     </dependencies>
 
     <properties>
